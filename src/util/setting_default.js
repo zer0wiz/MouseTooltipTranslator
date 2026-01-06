@@ -224,6 +224,12 @@ export var settingDict = {
     optionList: keyList,
     settingTab: "keyboard",
   },
+  keyToggleMouseoverTextType: {
+    default: "F8",
+    i18nKey: "Toggle_Mouseover_Text_Type_When",
+    optionList: keyList,
+    settingTab: "keyboard",
+  },
 
   // voice
   voiceVolume: {
@@ -333,6 +339,102 @@ export var settingDict = {
     settingTab: "graphic",
   },
 
+
+  // exclude
+  langExcludeList: {
+    default: [],
+    i18nKey: "Exclude_Language",
+    optionList: langList,
+    optionType: "multipleSelect",
+    settingTab: "exclude",
+  },
+  websiteExcludeList: {
+    default: ["*.example.com"],
+    i18nKey: "Exclude_Website",
+    optionList: "",
+    optionType: "comboBox",
+    settingTab: "exclude",
+  },
+  websiteWhiteList: {
+    default: [],
+    i18nKey: "Whitelist_Website",
+    optionList: "",
+    optionType: "comboBox",
+    settingTab: "exclude",
+  },
+  websiteExcludeBtn: {
+    i18nKey: "Block_Current_site",
+    optionList: [],
+    settingTab: "exclude",
+    optionType: "button",
+    icon: "mdi-web-cancel",
+    color: "red",
+    onClick: () => {},
+    onClickFuncName: "excludeCurrentWebsiteOnclickFunc",
+  },
+  websiteWhitelistBtn: {
+    i18nKey: "Allow_Current_site",
+    optionList: [],
+    settingTab: "exclude",
+    optionType: "button",
+    icon: "mdi-web-check",
+    color: "green",
+    onClick: () => {},
+    onClickFuncName: "includeWhitelistCurrentWebsiteOnclickFunc",
+  },
+  
+  // advanced
+
+  detectPDF: {
+    default: "true",
+    i18nKey: "Detect_PDF",
+    optionList: toggleList,
+    settingTab: "advanced",
+  },
+  mouseoverPauseSubtitle: {
+    default: "true",
+    i18nKey: "Mouseover_Pause_Subtitle",
+    optionList: toggleList,
+    settingTab: "advanced",
+  },
+  tooltipInfoSourceText: {
+    default: "false",
+    i18nKey: "Tooltip_Info_Source_Text",
+    optionList: toggleList,
+    settingTab: "advanced",
+  },
+  tooltipInfoSourceLanguage: {
+    default: "false",
+    i18nKey: "Tooltip_Info_Source_Language",
+    optionList: toggleList,
+    settingTab: "advanced",
+  },
+  tooltipInfoTransliteration: {
+    default: "false",
+    i18nKey: "Tooltip_Info_Transliteration",
+    optionList: toggleList,
+    settingTab: "advanced",
+  },
+  tooltipWordDictionary: {
+    default: "true",
+    i18nKey: "Tooltip_Word_Dictionary",
+    optionList: toggleList,
+    settingTab: "advanced",
+  },
+  voiceTranslatedRate: {
+    default: "default",
+    i18nKey: "Voice_Translated_Speed",
+    optionList: voiceRateListWithDefault,
+    settingTab: "advanced",
+  },
+  fallbackTranslatorEngine: {
+    default: "true",
+    i18nKey: "Fallback_Translator_Engine",
+    optionList: toggleList,
+    settingTab: "advanced",
+  },
+
+
   // speech
   speechRecognitionLanguage: {
     default: "en-US",
@@ -417,80 +519,7 @@ export var settingDict = {
     menu: false,
     settingTab: "speech",
   },
-
-  // advanced
-
-  detectPDF: {
-    default: "true",
-    i18nKey: "Detect_PDF",
-    optionList: toggleList,
-    settingTab: "advanced",
-  },
-  mouseoverPauseSubtitle: {
-    default: "true",
-    i18nKey: "Mouseover_Pause_Subtitle",
-    optionList: toggleList,
-    settingTab: "advanced",
-  },
-  tooltipInfoSourceText: {
-    default: "false",
-    i18nKey: "Tooltip_Info_Source_Text",
-    optionList: toggleList,
-    settingTab: "advanced",
-  },
-  tooltipInfoSourceLanguage: {
-    default: "false",
-    i18nKey: "Tooltip_Info_Source_Language",
-    optionList: toggleList,
-    settingTab: "advanced",
-  },
-  tooltipInfoTransliteration: {
-    default: "false",
-    i18nKey: "Tooltip_Info_Transliteration",
-    optionList: toggleList,
-    settingTab: "advanced",
-  },
-  tooltipWordDictionary: {
-    default: "true",
-    i18nKey: "Tooltip_Word_Dictionary",
-    optionList: toggleList,
-    settingTab: "advanced",
-  },
-  voiceTranslatedRate: {
-    default: "default",
-    i18nKey: "Voice_Translated_Speed",
-    optionList: voiceRateListWithDefault,
-    settingTab: "advanced",
-  },
-  fallbackTranslatorEngine: {
-    default: "true",
-    i18nKey: "Fallback_Translator_Engine",
-    optionList: toggleList,
-    settingTab: "advanced",
-  },
-
-  // exclude
-  langExcludeList: {
-    default: [],
-    i18nKey: "Exclude_Language",
-    optionList: langList,
-    optionType: "multipleSelect",
-    settingTab: "exclude",
-  },
-  websiteExcludeList: {
-    default: ["*.example.com"],
-    i18nKey: "Exclude_Website",
-    optionList: "",
-    optionType: "comboBox",
-    settingTab: "exclude",
-  },
-  websiteWhiteList: {
-    default: [],
-    i18nKey: "Whitelist_Website",
-    optionList: "",
-    optionType: "comboBox",
-    settingTab: "exclude",
-  },
+  
 
   // remains
   subtitleButtonToggle: {

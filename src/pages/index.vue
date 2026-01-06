@@ -26,23 +26,28 @@
           center-active
           show-arrows
           slider-color="red"
+          class="custom-tabs"
         >
-          <v-tab v-for="(tabName, tabId) in tabs" :key="tabId">
-            {{ tabName }}
+          <v-tab v-for="(tabName, tabId) in tabs" :key="tabId" :value="tabId" :text="tabName">
           </v-tab>
         </v-tabs>
       </template>
     </v-toolbar>
 
     <!-- main page contents -->
-    <v-lazy>
-      <v-window v-model="currentTab" class="scroll-container">
-        <v-window-item
+
+    <v-tabs-window v-model="currentTab" class="scroll-container">
+
+
+      
+
+        <v-tabs-window-item
           v-for="(tabName, tabId) in tabs"
           :key="tabId"
           :value="tabId"
           class="scrollList"
         >
+        
           <!-- comment request banner -->
           <CommentBanner v-if="tabId == 'MAIN'"> </CommentBanner>
 
@@ -51,7 +56,10 @@
             :key="optionName"
             :flat="!option.onClick"
             @click="option.onClick ? option.onClick() : null"
+            class="compact-list-item"
           >
+            <v-lazy>
+
             <!-- single select (default null) and multiple select option -->
             <v-select
               v-if="!option.optionType || option.optionType == 'multipleSelect'"
@@ -62,6 +70,7 @@
               :chips="option.optionType == 'multipleSelect'"
               :closable-chips="option.optionType == 'multipleSelect'"
               variant="underlined"
+              class="compact-input"
             >
             </v-select>
 
@@ -78,6 +87,7 @@
               multiple
               closable-chips
               variant="underlined"
+              class="compact-input"
             >
             </v-combobox>
 
@@ -88,6 +98,7 @@
               :label="option.description"
               variant="underlined"
               v-maska:[options]
+              class="compact-input"
             >
               <template v-slot:append>
                 <v-menu v-model="option.menu" :close-on-content-click="false">
@@ -107,22 +118,74 @@
               </template>
             </v-text-field>
 
-
-            <v-list-item-title v-else-if="option.optionType == 'button'">
+            
+            <v-list-item-title v-else-if="option.optionType == 'button'" class="ma-2" @click="option.onClickFuncName ? this[option.onClickFuncName]() : null">
+              <v-avatar :color="option.color" class="mr-2">
+              <v-icon size="25" color="white">{{ option.icon }}</v-icon>
+              </v-avatar>
               {{ option.description }}
             </v-list-item-title>
-            <template v-slot:prepend v-if="option.optionType == 'button'">
-              <v-avatar :color="option.color">
-                <v-icon size="25" color="white">{{ option.icon }}</v-icon>
-              </v-avatar>
-            </template>
+
+
+            
+          </v-lazy>
+
           </v-list-item>
-        </v-window-item>
-      </v-window>
-    </v-lazy>
+
+          
+
+        </v-tabs-window-item>
+
+        
+      </v-tabs-window>
+
+
+
+      
+    <!-- <v-fab
+      :color="open ? '' : 'primary'"
+      location="bottom end"
+      size="large"
+      icon
+      app
+      class="mr-8"
+    >
+      <v-icon>{{ open ? 'mdi-close' : 'mdi-dots-vertical' }}</v-icon>
+
+      <v-speed-dial
+        v-model="open"
+        location="top center"
+        transition="slide-y-reverse-transition"
+        activator="parent"
+      >
+        <v-btn
+          key="card"
+          icon
+          color="primary"
+          @click="$router.push('/deck')"
+          title="flashcard"
+        >
+          <v-icon>mdi-card-multiple</v-icon>
+        </v-btn>
+
+        <v-btn
+          key="history"
+          icon
+          color="primary"
+          @click="$router.push('/history')"
+          title="history"
+        >
+          <v-icon>mdi-history</v-icon>
+        </v-btn>        
+      </v-speed-dial>
+    </v-fab> -->
+
   </popupWindow>
 </template>
 <script>
+
+
+
 import browser from "webextension-polyfill";
 import { isProxy, toRaw } from "vue";
 import _ from "lodash";
@@ -157,7 +220,6 @@ var tabItems = Object.entries(settingDict).reduce((acc, [key, value]) => {
   acc[tab][key] = value;
   return acc;
 }, {});
-
 
 // convert tab name to i18n
 var tabs = Object.keys(tabItems).reduce((acc, tab) => {
@@ -212,6 +274,7 @@ export default {
       },
       currentPage: "main",
       toolbarIcons,
+      open: false,
     };
   },
   async mounted() {
@@ -235,6 +298,29 @@ export default {
   },
 
   methods: {
+    async getCurrentTabUrl() {
+      const tabs1 = await browser.tabs.query({ active: true, currentWindow: true });
+      const currentTab = tabs1[0];
+      const urlObj = new URL(currentTab.url);
+      return urlObj.hostname;
+    },
+    async excludeCurrentWebsiteOnclickFunc() {
+      const url = await this.getCurrentTabUrl();
+      this.appendSettingOnSettingList("websiteExcludeList", url);
+      
+    },
+    async includeWhitelistCurrentWebsiteOnclickFunc() {
+      const url = await this.getCurrentTabUrl();
+      this.appendSettingOnSettingList("websiteWhiteList", url);
+    },
+    async appendSettingOnSettingList(settingName, value) {
+      if (this.setting[settingName].includes(value)) {
+        return;
+      }
+      this.setting[settingName] = [...this.setting[settingName], value];
+    },
+
+
     wrapTitleValueJson(inputList, optionName) {
       // convert {key:item}  as {title:key, value:item}
       var textValList = [];
@@ -313,4 +399,17 @@ export default {
 .scroll-container {
   height: calc(100vh - 112px);
 }
+
+.custom-tabs :deep(.v-tab) {
+  font-size: 0.75rem;
+  min-width: 60px;
+  padding: 0 12px;
+}
+
+.compact-list-item {
+  min-height: 18px !important;
+  padding-top: 1px !important;
+  padding-bottom: 0px !important;
+}
+
 </style>

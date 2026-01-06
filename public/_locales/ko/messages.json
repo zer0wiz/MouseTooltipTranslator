@@ -62,6 +62,9 @@
 	"Speech_Recognition_When": {
 		"message": "음성 인지 시기"
 	},
+	"Toggle_Mouseover_Text_Type_When": {
+		"message": "Toggle Mouseover Text Type When"
+	},
 	"GRAPHIC______________________________________": {
 		"message": "GRAPHIC                                      "
 	},
@@ -124,6 +127,27 @@
 	},
 	"Voice_for_": {
 		"message": "Voice for "
+	},
+	"EXCLUDE______________________________________": {
+		"message": "EXCLUDE                                      "
+	},
+	"EXCLUDE": {
+		"message": "EXCLUDE"
+	},
+	"Exclude_Language": {
+		"message": "제외할 언어"
+	},
+	"Exclude_Website": {
+		"message": "Exclude Website"
+	},
+	"Whitelist_Website": {
+		"message": "Whitelist Website"
+	},
+	"Block_Current_Site": {
+		"message": "Block Current Site"
+	},
+	"Allow_Current_Site": {
+		"message": "Allow Current Site"
 	},
 	"ADVANCED______________________________________": {
 		"message": "ADVANCED                                      "
@@ -196,21 +220,6 @@
 	},
 	"Voice_Panel_Background_Color": {
 		"message": "음성 패널 출발어 배경색"
-	},
-	"EXCLUDE______________________________________": {
-		"message": "EXCLUDE                                      "
-	},
-	"EXCLUDE": {
-		"message": "EXCLUDE"
-	},
-	"Exclude_Language": {
-		"message": "제외할 언어"
-	},
-	"Exclude_Website": {
-		"message": "Exclude Website"
-	},
-	"Whitelist_Website": {
-		"message": "Whitelist Website"
 	},
 	"BACKUP______________________________________": {
 		"message": "BACKUP                                      "

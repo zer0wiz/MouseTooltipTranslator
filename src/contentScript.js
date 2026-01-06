@@ -18,6 +18,7 @@ import {
   enableMouseoverTextEvent,
   getNextExpandedRange,
   getMouseoverText,
+  forceTriggerMouseoverText
 } from "/src/event/mouseover";
 import * as util from "/src/util";
 import * as dom_util from "/src/util/dom";
@@ -91,7 +92,7 @@ var listenText = "";
 
 //determineTooltipShowHide based on hover, check mouse over word on every 700ms
 function startMouseoverDetector() {
-  enableMouseoverTextEvent(window, setting);
+  enableMouseoverTextEvent(window, setting, keyDownList);
   addEventHandler("mouseoverText", stageTooltipTextHover);
 }
 
@@ -139,6 +140,7 @@ async function stageTooltipText(text, actionType, range) {
   var isTtsSwap = keyDownDoublePress[setting["TTSWhen"]];
   var isTooltipOn = keyDownList[setting["showTooltipWhen"]];
   var timestamp = Number(Date.now());
+  
   // skip if mouse target is tooltip or no text, if no new word or  tab is not activated
   // hide tooltip, if  no text
   // if tooltip is off, hide tooltip
@@ -160,6 +162,7 @@ async function stageTooltipText(text, actionType, range) {
   } else if (!isTooltipOn) {
     hideTooltip();
   }
+
 
   //stage current processing word
   stagedText = text;
@@ -431,14 +434,13 @@ function highlightText(range, force = false) {
     }).appendTo("body");
   }
 }
-
 //Translate Writing feature==========================================================================================
 async function translateWriting() {
   //check current focus is write box and hot key pressed
   // if is google doc do not check writing box
   if (!dom_util.getFocusedWritingBox() && !util.isGoogleDoc()) {
     return;
-  }
+  }  
   // get writing text
   var writingText = await getWritingText();
   if (!writingText) {
@@ -490,6 +492,7 @@ async function makeNonEnglishTypingFinish() {
 
 async function insertText(text) {
   var writingBox = dom_util.getFocusedWritingBox();
+
   if (!text) {
     return;
   } else if (util.isGoogleDoc()) {
@@ -497,24 +500,24 @@ async function insertText(text) {
   } else if ($(writingBox).is("[spellcheck='true']")) {
     //for discord twitch
     await pasteTextInputBox(text);
-    await pasteTextExecCommand(text);
+    await pasteTextExecCommand(text, false);
   } else {
     //for bard , butterflies.ai
     await pasteTextExecCommand(text);
-    await pasteTextInputBox(text);
+    await pasteTextInputBox(text, false);
   }
 }
 
-async function pasteTextExecCommand(text) {
-  if (!hasSelection()) {
+async function pasteTextExecCommand(text, firstTry = true) {
+  if (!hasSelection() && !firstTry) {
     return;
   }
   document.execCommand("insertText", false, text);
   await delay(300);
 }
 
-async function pasteTextInputBox(text) {
-  if (!hasSelection()) {
+async function pasteTextInputBox(text, firstTry = true) {
+  if (!hasSelection() && !firstTry) {
     return;
   }
   var ele = util.getActiveElement();
@@ -556,7 +559,7 @@ function loadEventListener() {
   addEventHandler("mousedown", handleMouseKeyDown);
   addEventHandler("mouseup", handleMouseKeyUp);
   addEventHandler("mouseup", disableEdgeMiniMenu, false);
-
+  
   //detect tab switching to reset env
   addEventHandler("blur", resetTooltipStatus);
   addEventHandler("beforeunload", killAutoReader);
@@ -606,14 +609,21 @@ function handleMouseKeyUp(e) {
 }
 
 function holdKeydownList(key) {
-  //record keydown
+  var detectKeyDown = recordKeydownList(key);
+  recordDoublePress(key);
+  runKeydownPostProcess(key, detectKeyDown);
+}
+
+function recordKeydownList(key) {
   var detectKeyDown = false;
   if (key && !keyDownList[key] && !util.isCharKey(key)) {
     keyDownList[key] = true;
     detectKeyDown = true;
   }
+  return detectKeyDown;
+}
 
-  // check double press
+function recordDoublePress(key) {
   if (keyDownList[key]) {
     const now = Date.now();
     if (now - keyDownPressTime[key] < 1000) {
@@ -625,19 +635,25 @@ function holdKeydownList(key) {
   } else {
     keyDownList[key] = { lastPressed: Date.now() };
   }
+}
 
+async function runKeydownPostProcess(key, detectKeyDown) {
   // run keydown process
   if (detectKeyDown) {
-    restartWordProcess();
-    if (keyDownList[setting["keyDownTranslateWriting"]]) {
+    if (setting["keyDownTranslateWriting"]==key) {
       translateWriting();
     }
-    if (keyDownList[setting["keySpeechRecognition"]]) {
+    if (setting["keySpeechRecognition"]==key) {
       speech.startSpeechRecognition();
     }
-    if (keyDownList[setting["keyDownAutoReader"]]) {
+    if (setting["keyDownAutoReader"]==key) {
       startAutoReader();
     }
+    if (setting["keyToggleMouseoverTextType"]==key) {
+      setting["mouseoverTextType"] = setting["mouseoverTextType"] == "word" ? "sentence" : "word";
+      setting.save();
+    }
+    restartWordProcess();
   }
 
   if (util.isCharKey(key)) {
@@ -739,13 +755,12 @@ async function killAutoReader() {
   await util.waitUntilForever(() => !isAutoReaderRunning);
   isStopAutoReaderOn = false;
 }
-
 function disableEdgeMiniMenu(e) {
-  //prevent mouse tooltip overlap with edge mini menu
   if (util.isEdge() && mouseKeyMap[e.button] == "ClickLeft") {
     e.preventDefault();
   }
 }
+
 
 async function releaseKeydownList(key) {
   await delay(20);
@@ -755,10 +770,14 @@ async function releaseKeydownList(key) {
   }
 }
 
-function resetTooltipStatus() {
-  keyDownList = { always: true }; //reset key press
-  mouseMoved = false;
-  mouseMovedCount = 0;
+function resetTooltipStatus(keyReset=true, mouseReset=true) {
+  if (keyReset){
+    keyDownList = { always: true }; //reset key press
+  }
+  if (mouseReset) {
+    mouseMoved = false;
+    mouseMovedCount = 0;
+  }
   selectedText = "";
   stagedText = null;
   hideTooltip();
@@ -775,7 +794,8 @@ async function restartWordProcess() {
   if (selectedText) {
     stageTooltipTextSelect("", false);
   } else {
-    stageTooltipTextHover("", false);
+    forceTriggerMouseoverText();
+    // stageTooltipTextHover("", false);
   }
 }
 
@@ -828,7 +848,7 @@ function checkExcludeUrl() {
 
 async function getSetting() {
   setting = await SettingUtil.loadSetting(function settingCallbackFn() {
-    resetTooltipStatus();
+    resetTooltipStatus(true, false);
     applyStyleSetting();
     checkVideo();
     speech.initSpeechRecognitionLang(setting);

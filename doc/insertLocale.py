@@ -45,6 +45,7 @@ i18List = [
     "OCR When",
     "Mouseover Text Type Swap Key",
     "Speech Recognition When",
+    "Toggle Mouseover Text Type When",
 
     "GRAPHIC                                      ",
     "GRAPHIC",
@@ -68,6 +69,15 @@ i18List = [
     "Voice Target",
     "Voice Repeat",
     "Voice for ",
+
+
+    "EXCLUDE                                      ",
+    "EXCLUDE",
+    "Exclude Language",
+    "Exclude Website",
+    "Whitelist Website",
+    "Block Current Site",
+    "Allow Current Site",
 
     "ADVANCED                                      ",
     "ADVANCED",
@@ -96,12 +106,6 @@ i18List = [
     "Voice Panel Background Color",
 
 
-
-    "EXCLUDE                                      ",
-    "EXCLUDE",
-    "Exclude Language",
-    "Exclude Website",
-    "Whitelist Website",
 
 
     "BACKUP                                      ",

@@ -1,6 +1,6 @@
 {
 	"MAIN______________________________________": {
-		"message": "ГЛАВНАЯ                                      "
+		"message": "ГЛАВНОЕ"
 	},
 	"MAIN": {
 		"message": "ГЛАВНАЯ"
@@ -36,10 +36,10 @@
 		"message": "Определять наличие субтитров"
 	},
 	"KEYBOARD______________________________________": {
-		"message": "ГОРЯЧИЕ КЛАВИШИ                                      "
+		"message": "КЛАВИШИ"
 	},
 	"KEYBOARD": {
-		"message": "ГОРЯЧИЕ КЛАВИШИ"
+		"message": "КЛАВИШИ"
 	},
 	"Show_Tooltip_When": {
 		"message": "Показать подсказку когда"
@@ -62,11 +62,14 @@
 	"Speech_Recognition_When": {
 		"message": "Распознавание речи при нажатии"
 	},
+	"Toggle_Mouseover_Text_Type_When": {
+		"message": "Toggle Mouseover Text Type When"
+	},
 	"GRAPHIC______________________________________": {
-		"message": "ГРАФИЧЕСКИЕ НАСТРОЙКИ                                      "
+		"message": "ГРАФИКА"
 	},
 	"GRAPHIC": {
-		"message": "ГРАФИЧЕСКИЕ НАСТРОЙКИ"
+		"message": "ГРАФИКА"
 	},
 	"Tooltip_Font_Size": {
 		"message": "Размер шрифта в поле переводчика"
@@ -108,7 +111,7 @@
 		"message": "ГОЛОСОВЫЕ НАСТРОЙКИ                                      "
 	},
 	"VOICE": {
-		"message": "ГОЛОСОВЫЕ НАСТРОЙКИ"
+		"message": "ГОЛОС"
 	},
 	"Voice_Volume": {
 		"message": "Громкость голоса"
@@ -125,11 +128,32 @@
 	"Voice_for_": {
 		"message": "Голосовой синтезатор для "
 	},
+	"EXCLUDE______________________________________": {
+		"message": "ИСКЛЮЧЕНИЯ                                      "
+	},
+	"EXCLUDE": {
+		"message": "ИСКЛЮЧЕНИЯ"
+	},
+	"Exclude_Language": {
+		"message": "Исключить язык"
+	},
+	"Exclude_Website": {
+		"message": "Исключить указанный веб-сайт"
+	},
+	"Whitelist_Website": {
+		"message": "Белый список сайтов"
+	},
+	"Block_Current_Site": {
+		"message": "Block Current Site"
+	},
+	"Allow_Current_Site": {
+		"message": "Allow Current Site"
+	},
 	"ADVANCED______________________________________": {
 		"message": "РАСШИРЕННЫЕ НАСТРОЙКИ                                      "
 	},
 	"ADVANCED": {
-		"message": "РАСШИРЕННЫЕ НАСТРОЙКИ"
+		"message": "ДОПОЛНИТЕЛЬНО"
 	},
 	"Detect_PDF": {
 		"message": "Определять PDF-файлы"
@@ -159,7 +183,7 @@
 		"message": "Резервный движок перевода"
 	},
 	"SPEECH": {
-		"message": "РАСПОЗНАВАНИЕ РЕЧИ"
+		"message": "РЕЧЬ"
 	},
 	"Speech_Recognition_Language": {
 		"message": "Язык распознавания речи"
@@ -197,26 +221,11 @@
 	"Voice_Panel_Background_Color": {
 		"message": "Цвет фона голосовой панели"
 	},
-	"EXCLUDE______________________________________": {
-		"message": "ИСКЛЮЧЕНИЯ                                      "
-	},
-	"EXCLUDE": {
-		"message": "ИСКЛЮЧЕНИЯ"
-	},
-	"Exclude_Language": {
-		"message": "Исключить язык"
-	},
-	"Exclude_Website": {
-		"message": "Исключить указанный веб-сайт"
-	},
-	"Whitelist_Website": {
-		"message": "Белый список сайтов"
-	},
 	"BACKUP______________________________________": {
 		"message": "РЕЗЕРВНОЕ КОПИРОВАНИЕ                                      "
 	},
 	"BACKUP": {
-		"message": "РЕЗЕРВНОЕ КОПИРОВАНИЕ"
+		"message": "РЕЗЕРВ"
 	},
 	"Import_Setting": {
 		"message": "Импорт настроек"
